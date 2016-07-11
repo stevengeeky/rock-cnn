@@ -1,16 +1,11 @@
 import tensorflow as tf
 import numpy as np
 import random as rand
+import loader, copy
 import time, datetime
 
-def _scramble(xs, ys):
-    l = len(xs)
-    for i in range(l):
-        swapind = int(rand.random() * l)
-        tempx, tempy = xs[i], ys[i]
-        xs[i], ys[i] = xs[swapind], ys[swapind]
-        xs[swapind], ys[swapind] = tempx, tempy
-    return xs, ys
+def _scramble(xs, ys, rand_transform=True):
+    return loader.scramble_samples(xs, ys, False, rand_transform)
 
 def _conv2d(x, W):
     return tf.nn.conv2d(x, W, [1, 1, 1, 1], 'SAME')
@@ -174,18 +169,19 @@ class cnn(object):
         """Evaluates the predictive output of the model for input features 'xs'"""
         y = self.outputs[-1]
         
-        with tf.device(_device):
+        with tf.device(self._device):
             fd = { self.x:xs, self.keep_prob:1 }
             if process != None:
                 process = process.lower()
                 y = tf.argmax(y, 1) if process == 'argmax' else y
             return y.eval(feed_dict=fd)
 
-    def train(self, xs, ys, keep_probability=1, batch_size=10, iterations=1000, scramble_every=100, cost_func="cross_entropy", optimizer="adam", learning_rate=1e-4, log=True, flush=False, save_every=-1, save_where=""):
+    def train(self, xs, ys, keep_probability=1, batch_size=10, iterations=1000, scramble_every=100, rand_transform=True, cost_func="cross_entropy", optimizer="adam", learning_rate=1e-4, log=True, flush=False, save_every=-1, save_where=""):
         """Trains a network with inputs 'xs' and predefined targets 'ys'"""
         # Available: cross_entropy, logit, squared_error
         # Available: adam, gradient_descent
         
+        _xs, _ys = copy.deepcopy(xs), copy.deepcopy(ys)
         cost_func = cost_func.lower() if not callable(cost_func) else cost_func
         optimizer = optimizer.lower()
         
@@ -194,6 +190,8 @@ class cnn(object):
         if callable( getattr(xs, "next_batch", None) ):
             grab_obo = True
             _funct = xs
+        elif rand_transform:
+            xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), True)
         
         with tf.device(self._device):
             cy = tf.clip_by_value(y, 1e-10, 1)
@@ -242,7 +240,7 @@ class cnn(object):
                 
             if scramble_every != None and (i + 1) % scramble_every == 0:
                 if not grab_obo:
-                    xs, ys = _scramble(xs, ys)
+                    xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), rand_transform)
                 
                 if log:
                     print(form.format("[" + _format_time(self._l_p_s) + "] scr", i + 1, cost.eval(fd), accuracy.eval(fd), div_accuracy.eval(fd)))
