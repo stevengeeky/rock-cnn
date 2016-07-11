@@ -4,7 +4,7 @@
 
 Rocks and human ratings granted by Robert Nosofsky.
 Theory by Steven O'Riley.
-See ['An Explication of Large Entities'](https://docs.google.com/document/d/1WpAlT9FFR2_7rEWqicd9v34EIlS_dnuNM8uViNFMGII/edit?usp=sharing) for explanation of S <- f_a->b (g(a), g(b))
+See ['An Explication of Large Entities'](https://docs.google.com/document/d/1WpAlT9FFR2_7rEWqicd9v34EIlS_dnuNM8uViNFMGII/edit?usp=sharing) for explanation of S&larr;f<sub>a&rarr;b</sub>(g(a), g(b))
 
 # Installation Instructions
 To start testing (or training) for your own use, you'll first require a few dependencies.
