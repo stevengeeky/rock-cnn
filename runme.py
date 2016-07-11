@@ -60,7 +60,7 @@ def get_transformed_ratings(table=None):
             ls = line.split(" ")[3:]
             l = ls[:6] + cs[:2] + [0]
             if first:
-                print(cs, l, len(l))
+                #print(cs, l, len(l))
                 first = False
             
             pieces.append(np.array(l).astype(np.float32) / 10)
@@ -71,7 +71,7 @@ C = n.cnn()
 
 C.device("gpu")
 
-C.input_layer([None, loader.limit_size ** 2, 4], [-1, loader.limit_size, loader.limit_size, 4])
+C.input_layer([None, loader.limit_size ** 2, 3], [-1, loader.limit_size, loader.limit_size, 3])
 C.layer('tanh', [5, 5], 32, (2, 2))
 C.layer('tanh', [5, 5], 64, (3, 3))
 C.layer('tanh', [5, 5], 128, (5, 5))
@@ -98,7 +98,7 @@ def save():
     global C
     C.flush_layers("session0/training_data.ckpt")
 
-    table = tvals
+    table = range(360)
     xs, dut_ys = loader.load_samples("data/samples/items", log=True, table=table)
     rats = get_transformed_ratings(table=table)
     
@@ -127,8 +127,10 @@ def train():
     
     for i in range(30):
         ys.append( np.array(rats[i]) )
-
-    C.train(xs, ys, .5, 30, 10000000, 500, 'squared_error', 'adam', 1e-5, True, True, save_every=1000, save_where="session0/training_data.ckpt")
+    
+    C.train(xs, ys, .5, 30, 10000000, 100, True,
+            'squared_error', 'adam', 1e-5, True, True,
+            save_every=1000, save_where="session0/training_data.ckpt")
 
 train()
 
