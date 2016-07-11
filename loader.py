@@ -3,7 +3,7 @@ import numpy as np
 import random
 import io, os, sys
 
-limit_size = 2 * 3 * 5 * 7
+limit_size = 3 * 5 * 7
 
 def check_file(filename):
     """Returns whether or not a file is considered a valid image"""
