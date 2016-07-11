@@ -3,7 +3,7 @@ import numpy as np
 import random
 import io, os, sys
 
-limit_size = 2 * 3 * 7
+limit_size = 2 * 3 * 5 * 7
 
 def check_file(filename):
     """Returns whether or not a file is considered a valid image"""
@@ -45,25 +45,19 @@ def num_to_mod_tri(n, xy):
     c = int(sub - b * items[0])
     return a, b, c
 
-def load_image(fn, preserve_data=False):
+def load_image(fn, preserve_data=False, to_xyz=True, flip=0):
     """Loads and assembles an image with filename fn"""
     global limit_size
-    im = Image.open(fn)
-    if preserve_data:
-        return im
-
-    aspect = float(im.width) / float(im.height)
-    if im.width < im.height:
-        im = im.resize((limit_size, int(limit_size / aspect)))
-    elif im.width > im.height:
-        im = im.resize((int(limit_size * aspect), limit_size))
-
-    sx = int((max(im.width, limit_size) - limit_size) / 2)
-    sy = int((max(im.height, limit_size) - limit_size) / 2)
-
-    sub = im.crop((sx, sy, limit_size + sx, limit_size + sy)).convert('RGBA')
-
-    return np.mat(sub.getdata()) / 255
+    img = Image.open(fn)
+    pix = img.load()
+    for y in range(img.height):
+        for x in range(img.width):
+            if pix[x, y][3] < 255:
+                pix[x, y] = (0, 0, 0, 0)
+    
+    img = img.convert("RGB")
+    
+    return img
 
 def name_nicely(fd, preface="item"):
     """Renames all images within a directory, recursively, in a nicely labeled fashion"""
@@ -81,14 +75,14 @@ def name_nicely(fd, preface="item"):
                 os.rename(os.path.join(root, name), os.path.join(root, newname))
                 count += 1
 
-def load_images(fd):
+def load_images(fd, to_xyz=True, flip=0):
     """Loads all images recursively within directory fd"""
     res = []
     for root, dirs, files in os.walk(fd, topdown=False):
         for name in files:
             if check_file(name):
                 file = os.path.join(root, name)
-                image = load_image(file)
+                image = load_image(file, False, to_xyz, flip)
                 res.append(image)
     return res
 
@@ -162,20 +156,70 @@ def load_samples(savefilename, log=True, amount=-1, start=0, table=None, savewhe
         count += 1
     return xs, ys
 
-def scramble_samples(xs, ys, indices=False):
+trans_count = 0
+def apply_transform(image, translation='CENTER', rotation=0, flip=0, to_xyz=True):
+    global trans_count
+    aspect = float(image.width) / float(image.height)
+    
+    if rotation != 0:
+        image = image.rotate(rotation)
+    if flip == 1 or flip == 3:
+        image = image.transpose(Image.FLIP_LEFT_RIGHT)
+    if flip == 2 or flip == 3:
+        image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    
+    if image.width > image.height:
+        image = image.resize((limit_size, int(limit_size / aspect)))
+    elif image.width < image.height:
+        image = image.resize((int(limit_size * aspect), limit_size))
+    
+    backing = Image.new('RGB', (limit_size, limit_size), (0, 0, 0))
+    #backing.paste( im, (int((backing.width - im.width) / 2), int((backing.height - im.height) / 2), im.width, im.height) )
+    
+    left, top = 0, 0
+    if translation == 'CENTER':
+        left = int((backing.width - image.width) / 2); top = int((backing.height - image.height) / 2)
+    elif translation == 'RANDOM':
+        left = int(random.random() * (backing.width - image.width)); top = int(random.random() * (backing.height - image.height))
+    backing.paste(image, (left, top, image.width + left, image.height + top))
+    
+    #if (trans_count % 10 == 0):
+    #    print("(Showing)")
+    #    backing.show()
+    #trans_count += 1
+    
+    if (to_xyz):
+        rgb2xyz = (
+            0.412453, 0.357580, 0.180423, 0,
+            0.212671, 0.715160, 0.072169, 0,
+            0.019334, 0.119193, 0.950227, 0 )
+        backing = backing.convert("RGB", rgb2xyz)
+    
+    return np.mat(backing.getdata()) / 255
+
+def scramble_samples(xs, ys, indices=False, rand_transform=True):
     """Scrambles a sample of respective (x_list, y_)s, then returns them in a tuple"""
+    global limit_size
+    
     l = len(xs)
     for i in range(l):
         swapind = int(random.random() * l)
         tempx, tempy = xs[i], ys[i]
+        
         xs[i] = xs[swapind]
         ys[i] = ys[swapind]
         xs[swapind] = tempx
         ys[swapind] = tempy
+        
         if indices:
             temp = indices[i]
             indices[i] = indices[swapind]
             indices[swapind] = temp
+    
+    if (rand_transform):
+        for i in range(l):
+            xs[i] = apply_transform(xs[i], 'RANDOM', int(random.random() * 360), int(random.random() * 4), True)
+    
     if not indices:
         return xs, ys
     return xs, ys, indices
