@@ -2,7 +2,7 @@
 
 from PIL import Image
 import random as rand
-import io, obsolete
+import io
 import loader
 
 import network as n
