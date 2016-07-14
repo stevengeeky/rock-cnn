@@ -12,6 +12,7 @@ To start testing (or training) for your own use, you'll first require a few depe
 For network involvement and mathematics, install [TensorFlow](https://www.tensorflow.org/versions/r0.9/get_started/os_setup.html#pip-installation) (and numpy, which is included in the tensorflow installation)
 
 For loading resources, install the latest version of [Pillow](https://pypi.python.org/pypi/Pillow) (make sure PIL is uninstalled)
+Also, for new Ubuntu installs, don't forget to install libjpeg (`sudo apt-get install libjpeg8-dev`) and zlib (`sudo apt-get install zlib1g-dev`)
 
 Also don't forget, whenever testing or running anything on your GPU, to `export LD_LIBRARY_PATH=/usr/local/cuda/lib64` in shell (or terminal)
 
