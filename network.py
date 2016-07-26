@@ -4,8 +4,8 @@ import random as rand
 import loader, copy
 import time, datetime
 
-def _scramble(xs, ys, rand_transform=True):
-    return loader.scramble_samples(xs, ys, False, rand_transform)
+def _scramble(xs, ys, rand_transform=True, input_images=False):
+    return loader.scramble_samples(xs, ys, False, rand_transform, input_images)
 
 def _conv2d(x, W):
     return tf.nn.conv2d(x, W, [1, 1, 1, 1], 'SAME')
@@ -21,6 +21,22 @@ def _ap(x, stride=(1, 1)):
 def _format_time(howmany=0):
     return time.strftime("%H:%M:%S") + "/" + str(howmany)
 
+class layer(object):
+    W = None
+    b = None
+    h = None
+    p = None
+    
+    def __init__(self, weight, bias, h_activation, pool):
+        self.W = weight
+        self.b = bias
+        self.h = h_activation
+        self.p = pool
+    
+    def eval(self, feed_dict=None):
+        return dict(W=self.W.eval(), b=self.b.eval()) if feed_dict == None else dict(W=self.W.eval(), b=self.b.eval(), h=self.h.eval(feed_dict=feed_dict), p=self.p.eval(feed_dict=feed_dict))
+    
+
 class cnn(object):
     features = []
     targets = []
@@ -29,7 +45,9 @@ class cnn(object):
     biases = []
     activations = []
     pools = []
-
+    
+    hidden_layers = []
+    
     outputs = []
 
     _device = "/cpu:0"
@@ -46,6 +64,8 @@ class cnn(object):
 
     x = None
     y_ = None
+    y = None
+    
     _graph = None
     keep_prob = 1
 
@@ -56,9 +76,11 @@ class cnn(object):
     _curr_s = datetime.datetime.now().second
     _b_j_0 = 0
     _b_i_o = 0
-
+    
     def __init__(self, name="network"):
+        """Instantiates a new Convolutional Neural Network"""
         self.name = name
+        self._graph = tf.Graph()
 
     def device(self, device_type="cpu", log=True):
         """Assigns a device for use with this network"""
@@ -68,7 +90,9 @@ class cnn(object):
             self._device = "/" + device_type + ":0"
             if log:
                 print("%s:Active" % device_type.upper())
-
+        else:
+            self._device = device_type
+    
     def input_layer(self, shape=[1, 1, 1, 1], unflatten=True):
         """Prepares an input layer within the network"""
 
@@ -111,10 +135,12 @@ class cnn(object):
         with tf.device(self._device):
             W = self._wvar([block_size[0], block_size[1], self._targets[-1], target_amount])
             b = self._bvar([target_amount])
-
+            
             inner = _conv2d(self.features[-1], W) + b
             h = tf.nn.relu(inner) if activation == "relu" else tf.nn.elu(inner) if activation == "elu" else tf.nn.sigmoid(inner) if activation == "sigmoid" else tf.nn.elu(inner)
             p = _mp(h, pool_size) if pooling == "max" else _ap(h, pool_size)
+            
+            self.hidden_layers.append( layer(W, b, h, p) )
         
         self.activations.append(activation)
         self._features.append(self._targets[-1])
@@ -140,6 +166,8 @@ class cnn(object):
             
             self.keep_prob = tf.placeholder(tf.float32, name="keep_prob")
             h = tf.nn.dropout(h, self.keep_prob)
+            
+            self.hidden_layers.append( layer(W, b, h, h) )
         
         self.activations.append(activation)
         self._features.append(self._targets[-1])
@@ -156,27 +184,26 @@ class cnn(object):
 
             W = self._wvar([self._targets[-1], shape[1]])
             b = self._bvar([shape[1]])
-
+            
             inner = tf.matmul(self.features[-1], W) + b
-            y = tf.nn.tanh(inner) if activation == "tanh" else tf.nn.softsign(inner) if activation == "softsign" else tf.nn.softplus(inner) if activation == "softplus" else tf.nn.sigmoid(inner) if activation == "sigmoid" else tf.nn.elu(inner) if activation == "elu" else tf.nn.softmax(inner)
+            self.y = tf.nn.tanh(inner) if activation == "tanh" else tf.nn.softsign(inner) if activation == "softsign" else tf.nn.softplus(inner) if activation == "softplus" else tf.nn.sigmoid(inner) if activation == "sigmoid" else tf.nn.elu(inner) if activation == "elu" else tf.nn.softmax(inner)
         
         self.targets.append(self.y_)
-        self.outputs.append(y)
-
+        self.outputs.append(self.y)
+        
         self._sess = tf.InteractiveSession()
 
     def push(self, xs, process=None):
         """Evaluates the predictive output of the model for input features 'xs'"""
-        y = self.outputs[-1]
         
         with tf.device(self._device):
             fd = { self.x:xs, self.keep_prob:1 }
             if process != None:
                 process = process.lower()
-                y = tf.argmax(y, 1) if process == 'argmax' else y
-            return y.eval(feed_dict=fd)
+                self.y = tf.argmax(self.y, 1) if process == 'argmax' else self.y
+            return self.y.eval(feed_dict=fd)
 
-    def train(self, xs, ys, keep_probability=1, batch_size=10, iterations=1000, scramble_every=100, rand_transform=True, cost_func="cross_entropy", optimizer="adam", learning_rate=1e-4, log=True, flush=False, save_every=-1, save_where=""):
+    def train(self, xs, ys, keep_probability=1, batch_size=10, iterations=1000, scramble_every=100, rand_transform=True, cost_func="cross_entropy", optimizer="adam", learning_rate=1e-4, log=True, flush=False, save_every=-1, save_where="", input_images=False):
         """Trains a network with inputs 'xs' and predefined targets 'ys'"""
         # Available: cross_entropy, logit, squared_error
         # Available: adam, gradient_descent
@@ -185,20 +212,20 @@ class cnn(object):
         cost_func = cost_func.lower() if not callable(cost_func) else cost_func
         optimizer = optimizer.lower()
         
-        y = self.outputs[-1]
+        y = self.y
         grab_obo = False
         if callable( getattr(xs, "next_batch", None) ):
             grab_obo = True
             _funct = xs
-        elif rand_transform:
-            xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), True)
+        else:
+            xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), rand_transform)
         
         with tf.device(self._device):
             cy = tf.clip_by_value(y, 1e-10, 1)
             cost = cost_func(self.y_, cy) if callable(cost_func) else tf.reduce_mean(-tf.reduce_sum( self.y_ * tf.log(cy), reduction_indices=[1] )) if cost_func == "cross_entropy" else -tf.reduce_sum( self.y_ * tf.log(cy) + (1 - self.y_) * tf.log(1 - cy) ) if cost_func == "logit" else tf.reduce_mean(tf.pow(self.y_ - y, 2))
             opt = tf.train.AdamOptimizer(learning_rate) if optimizer == "adam" else tf.train.GradientDescentOptimizer(learning_rate)
             step = opt.minimize(cost)
-
+            
             correct = tf.equal(tf.argmax(y, 1), tf.argmax(self.y_, 1))
             accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))
 
@@ -216,7 +243,11 @@ class cnn(object):
                 self.load(flush)
 
         form = "{:<6s} i {:<8d} J {:<11g} m {:<8g} s {:<8g}"
-        for i in range(iterations):
+        i = 0
+        
+        while True if iterations == None else i < iterations:
+            i += 1
+            
             now = datetime.datetime.now()
             if (now.second != self._curr_s):
                 self._l_p_s = self._c_p_s
@@ -240,7 +271,7 @@ class cnn(object):
                 
             if scramble_every != None and (i + 1) % scramble_every == 0:
                 if not grab_obo:
-                    xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), rand_transform)
+                    xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), rand_transform, input_images)
                 
                 if log:
                     print(form.format("[" + _format_time(self._l_p_s) + "] scr", i + 1, cost.eval(fd), accuracy.eval(fd), div_accuracy.eval(fd)))
@@ -277,7 +308,20 @@ class cnn(object):
             if xs == None and ys == None and keep_probability == None:
                 return t.eval()
             return t.eval(feed_dict={ self.x:xs, self.y_:ys, self.keep_prob:keep_probability })
-
+    
+    def apply(self, **feed_dict):
+        res = dict()
+        if 'x' in feed_dict:
+            res[self.x] = feed_dict['x']
+        if 'y_' in feed_dict:
+            res[self.y_] = feed_dict['y_']
+        if 'keep_prob' in feed_dict:
+            res[self.keep_prob] = feed_dict['keey_prob']
+        elif 'p' in feed_dict:
+            res[self.keep_prob] = feed_dict['p']
+        
+        return res
+    
     def _bvar(self, shape, name=-1):
         if name == -1:
             self.bias_index += 1
@@ -295,7 +339,7 @@ class cnn(object):
         if name == -1:
             self.weight_index += 1
             name = "w" + str(self.weight_index)
-
+        
         initial = tf.truncated_normal(shape, stddev=.1)
         v = tf.Variable(initial, name=name)
 
