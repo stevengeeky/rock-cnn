@@ -226,7 +226,7 @@ def load_samples(savefilename, log=True, amount=-1, start=0, table=None, savewhe
     table = range(len(lines)) if table == None else table
     for i in table:
         line = lines[i]
-        print(line)
+        
         if amount != None and amount >= 0 and count >= amount:
             break
         sp = line.split("\t")
