@@ -19,4 +19,4 @@ Also don't forget, whenever testing or running anything on your GPU, to `export 
 Now you're ready to test and run with rock-cnn.
 Simply `git clone https://github.com/stevengeeky/rock-cnn.git` and `cd` into the directory.
 
-runme.py is utilised for training and calculating results from g(x) (image pre-processing and dimensional rating), and runme2.py is utilised for training and calculating the results from f(u, v) (similarity ratings).
+The project is being revised, but thus far training for g(x) has proven to be hindered on the fact that finding a smooth representation of the dataset is quite difficult.
