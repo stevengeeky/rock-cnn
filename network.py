@@ -218,7 +218,7 @@ class cnn(object):
             grab_obo = True
             _funct = xs
         else:
-            xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), rand_transform)
+            xs, ys = _scramble(copy.deepcopy(_xs), copy.deepcopy(_ys), rand_transform, input_images)
         
         with tf.device(self._device):
             cy = tf.clip_by_value(y, 1e-10, 1)

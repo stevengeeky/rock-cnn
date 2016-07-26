@@ -73,7 +73,7 @@ def get_transformed_ratings(table=tvals):
 def check_file(filename):
     """Returns whether or not a file is considered a valid image"""
     ext = filename.split(".")[-1].lower()
-    return ext == "jpg" or ext == "png" or ext == "jpeg"
+    return not "._" in filename and (ext == "jpg" or ext == "png" or ext == "jpeg")
 
 def reset(filename):
     file = io.open(filename, "w+")
@@ -115,10 +115,12 @@ def load_image(fn, preserve_data=False, rgba=True):
     global limit_size
     img = Image.open(fn)
     pix = img.load()
-    for y in range(img.height):
-        for x in range(img.width):
-            if pix[x, y][3] == 0:
-                pix[x, y] = (0, 0, 0, 0)
+    
+    if len(np.shape(pix)) == 4:
+        for y in range(img.height):
+            for x in range(img.width):
+                if pix[x, y][3] == 0:
+                    pix[x, y] = (0, 0, 0, 0)
     
     if not rgba:
         img = img.convert("RGB")
@@ -224,6 +226,7 @@ def load_samples(savefilename, log=True, amount=-1, start=0, table=None, savewhe
     table = range(len(lines)) if table == None else table
     for i in table:
         line = lines[i]
+        print(line)
         if amount != None and amount >= 0 and count >= amount:
             break
         sp = line.split("\t")
@@ -318,7 +321,7 @@ def scramble_samples(xs, ys, indices=False, rand_transform=True, input_images=Fa
                 xs[i] = apply_transform(xs[i], 'RANDOM', int(random.random() * 360), int(random.random() * 4), True, True, True)
         else:
             for i in range(l):
-                xs[i] = apply_transform(xs[i], 'CENTER', 0, 0, False, False, True)
+                xs[i] = apply_transform(xs[i])
     
     if not indices:
         return xs, ys
