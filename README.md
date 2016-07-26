@@ -1,6 +1,6 @@
 # rock-cnn
 
-&rarr; Aims to reasonably compare two rocks in accordance with that of a human using convolutional networks with tensorflow.
+&rarr; Aims to reasonably compare two rocks in accordance with that of a human using convolutional neural networks.
 
 Rocks and human ratings granted by Robert Nosofsky.
 Theory by Steven O'Riley.
