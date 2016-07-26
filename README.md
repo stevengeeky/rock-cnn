@@ -7,7 +7,7 @@ Theory by Steven O'Riley.
 See ['An Explication of Large Entities'](https://docs.google.com/document/d/1WpAlT9FFR2_7rEWqicd9v34EIlS_dnuNM8uViNFMGII/edit?usp=sharing) for explanation of _S&larr;f<sub>a&rarr;b</sub>(g(a), g(b))_
 
 # Installation Instructions
-To start testing (or training) for your own use, you'll first require a few dependencies.
+To start testing (or training) for your own use, you'll first require a few dependencies.  (And, for developmental notice, I am using Python 2.7.11)
 
 For network involvement and mathematics, install [TensorFlow](https://www.tensorflow.org/versions/r0.9/get_started/os_setup.html#pip-installation) (and numpy, which is included in the tensorflow installation)
 
