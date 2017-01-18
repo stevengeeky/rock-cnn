@@ -6,8 +6,6 @@
 
 > It is important to note that the output targets are **not** linearly transformed, meaning the study is not hindered by 'optimization through regulation.'
 
-(Another study done on this topic was able to achieve almost unbelievable accuracy, but is virtually irreplicable due to the fact that the output targets are a linearly regressed isomorphic subspace transformed from a linearly regressed 4096x4096 target space. In other words, that particular study is illegitimate.)
-
 For this project, a group of 80 subjects were presented with two images of rocks (of which there were 30 to choose from), and asked to rate the similarity between the two images on a scale from 1 to 10 (1 indicating that the rocks have no similarity, and 10 indicating the the rocks are absolutely the same). We decided to use rocks for comparison because the observations that subjects derive from them are less likely to be based on outside information (for example, were subjects asked to compare the image of a schoolbus with the image of a monkey, the immediate fact that a monkey is not a schoolbus would define a factor of difference which would be less based upon physical appearance alone, and more based upon the fact that the two objects are classifiably different). The overall goal of this project is then to see how well an RNN can replicate the 30 * 29 / 2 human similarity ratings between any two given distinct rocks.
 
 All rock images and human similarity ratings were recorded and shared by Robert Nosofsky.
