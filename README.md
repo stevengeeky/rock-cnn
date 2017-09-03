@@ -20,7 +20,7 @@ For network involvement and mathematics, install [TensorFlow](https://www.tensor
 For loading resources, install the latest version of [Pillow](https://pypi.python.org/pypi/Pillow) (make sure PIL is uninstalled)
 Also, for new Ubuntu installs, don't forget to install libjpeg (`sudo apt-get install libjpeg8-dev`) and zlib (`sudo apt-get install zlib1g-dev`)
 
-Also don't forget, whenever testing or running anything on your GPU, to `export LD_LIBRARY_PATH=/usr/local/cuda/lib64` in shell (or terminal)
+Also don't forget, whenever testing or running anything on your GPU, to `export LD_LIBRARY_PATH=/usr/local/cuda/lib64` in shell (or terminal) OR `echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64' >> ~/.bash_login`
 
 Now you're ready to test and run with rock-cnn.
 Simply `git clone https://github.com/stevengeeky/rock-cnn.git` and `cd` into the directory.
