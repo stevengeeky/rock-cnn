@@ -1,5 +1,5 @@
 # Example demo of training a network on the mnist tensorflow demo.  It's super simple!
-# Demo by Steven O'Riley; mnist data courtesy of TensorFlow and MNIST
+# mnist data courtesy of TensorFlow and MNIST
 
 # Include inclusion folder for network.py (avoid this appendage by putting network.py and loader.py in the same directory)
 import sys

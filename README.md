@@ -27,4 +27,3 @@ Simply `git clone https://github.com/stevengeeky/rock-cnn.git` and `cd` into the
 
 The project is being revised, but thus far training for g(x) has proven to be hindered on the fact that finding a smooth representation of the dataset is quite difficult.
 
-*A Python/TensorFlow Project by Steven O'Riley*
