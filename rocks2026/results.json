@@ -1,0 +1,493 @@
+{
+ "A1_zero_shot": {
+  "pearson": 0.5051683080868784,
+  "spearman": 0.500976785840668,
+  "n_pairs": 435
+ },
+ "A1b_pixel_baseline": {
+  "pearson": 0.12633135521055713
+ },
+ "A2_learned_metric_held_out_rock": {
+  "pearson": 0.755794287625738,
+  "spearman": 0.7634827778182555
+ },
+ "A3_with_same_image_pairs_the_2016_flaw": {
+  "pearson": 0.8709768836712547,
+  "note": "identical images predicted identical; r inflates. This is the number the other professor caught."
+ },
+ "B_attributes_from_features": [
+  {
+   "dim": 1,
+   "r_heldout_category": 0.9181573917441124,
+   "binary": false
+  },
+  {
+   "dim": 2,
+   "r_heldout_category": 0.8880638296534179,
+   "binary": false
+  },
+  {
+   "dim": 3,
+   "r_heldout_category": 0.8633993804717459,
+   "binary": false
+  },
+  {
+   "dim": 4,
+   "r_heldout_category": 0.831746910994517,
+   "binary": false
+  },
+  {
+   "dim": 5,
+   "r_heldout_category": 0.8774557695795344,
+   "binary": false
+  },
+  {
+   "dim": 6,
+   "r_heldout_category": 0.8768488105656449,
+   "binary": false
+  },
+  {
+   "dim": 7,
+   "r_heldout_category": 0.8381193033917698,
+   "binary": true
+  },
+  {
+   "dim": 8,
+   "r_heldout_category": 0.8423061613183,
+   "binary": true
+  },
+  {
+   "dim": 9,
+   "r_heldout_category": 0.8752956575654438,
+   "binary": true
+  },
+  {
+   "dim": 10,
+   "r_heldout_category": 0.6782690611448945,
+   "binary": true
+  },
+  {
+   "dim": 11,
+   "r_heldout_category": 0.7330601732268016,
+   "binary": true
+  },
+  {
+   "dim": 12,
+   "r_heldout_category": 0.6049130255924761,
+   "binary": true
+  },
+  {
+   "dim": 13,
+   "r_heldout_category": 0.8617025260148953,
+   "binary": false
+  },
+  {
+   "dim": 14,
+   "r_heldout_category": 0.2868248345030212,
+   "binary": false
+  },
+  {
+   "dim": 15,
+   "r_heldout_category": 0.6225163137649553,
+   "binary": false
+  }
+ ],
+ "B_dims_vs_image_stats": {
+  "1": {
+   "mean lightness": 0.9321635913747641,
+   "mean saturation": 0.28902982116653975,
+   "grey-level std (texture)": -0.38977288253982934
+  },
+  "2": {
+   "mean lightness": 0.17380670731512166,
+   "mean saturation": 0.14978719841251575,
+   "grey-level std (texture)": 0.20104902341874434
+  },
+  "3": {
+   "mean lightness": 0.13843186010059472,
+   "mean saturation": 0.08826079898475034,
+   "grey-level std (texture)": 0.14223665880883274
+  },
+  "4": {
+   "mean lightness": -0.24321780379795935,
+   "mean saturation": -0.21441883075014592,
+   "grey-level std (texture)": 0.43448790964602335
+  },
+  "5": {
+   "mean lightness": 0.05257934403291591,
+   "mean saturation": -0.018871158276832143,
+   "grey-level std (texture)": -0.3191830057043819
+  },
+  "6": {
+   "mean lightness": 0.022929120120600215,
+   "mean saturation": 0.25203284260177305,
+   "grey-level std (texture)": 0.33092262567712993
+  },
+  "7": {
+   "mean lightness": 0.2802463714397577,
+   "mean saturation": 0.16909991722177087,
+   "grey-level std (texture)": -0.12408990077798795
+  },
+  "8": {
+   "mean lightness": 0.061455986047660754,
+   "mean saturation": 0.10781594092438304,
+   "grey-level std (texture)": 0.26355972359381097
+  },
+  "9": {
+   "mean lightness": 0.026030101440141753,
+   "mean saturation": 0.03631669023323696,
+   "grey-level std (texture)": -0.03866696341245906
+  },
+  "10": {
+   "mean lightness": 0.20502075946175263,
+   "mean saturation": 0.009669794667769502,
+   "grey-level std (texture)": -0.13959750103283997
+  },
+  "11": {
+   "mean lightness": -0.23156657120642457,
+   "mean saturation": -0.06280904595153669,
+   "grey-level std (texture)": 0.07920546238658097
+  },
+  "12": {
+   "mean lightness": -0.0358757539826898,
+   "mean saturation": 0.09081045777395522,
+   "grey-level std (texture)": 0.2518906421369963
+  },
+  "13": {
+   "mean lightness": -0.024215408171189414,
+   "mean saturation": 0.14223327226734267,
+   "grey-level std (texture)": 0.3925402145711925
+  },
+  "14": {
+   "mean lightness": -0.04464907471630088,
+   "mean saturation": -0.014649528271275327,
+   "grey-level std (texture)": -0.22018426073543804
+  },
+  "15": {
+   "mean lightness": -0.06738933962815907,
+   "mean saturation": -0.1749620176391226,
+   "grey-level std (texture)": 0.12483496734733768
+  }
+ },
+ "C_mds_stress": 35.012505156427494,
+ "C_mds_dims_from_features": [
+  {
+   "mds_dim": 1,
+   "r_leave_one_rock_out": 0.7068097984663462,
+   "variance": 2.322284862012603
+  },
+  {
+   "mds_dim": 2,
+   "r_leave_one_rock_out": 0.7774870014148946,
+   "variance": 2.5592180089908783
+  },
+  {
+   "mds_dim": 3,
+   "r_leave_one_rock_out": 0.38509131227022825,
+   "variance": 1.4988169879176096
+  },
+  {
+   "mds_dim": 4,
+   "r_leave_one_rock_out": 0.6770552020301929,
+   "variance": 2.6716406595010422
+  },
+  {
+   "mds_dim": 5,
+   "r_leave_one_rock_out": 0.7071421563437343,
+   "variance": 2.1039486270219245
+  },
+  {
+   "mds_dim": 6,
+   "r_leave_one_rock_out": 0.48210925925142417,
+   "variance": 1.5013265355787353
+  },
+  {
+   "mds_dim": 7,
+   "r_leave_one_rock_out": 0.6277125326414914,
+   "variance": 2.044307276289618
+  },
+  {
+   "mds_dim": 8,
+   "r_leave_one_rock_out": 0.722074202868028,
+   "variance": 2.845450501926876
+  }
+ ],
+ "C_mds_dim_vs_rated": [
+  {
+   "mds_dim": 1,
+   "best_rated_dim": 5,
+   "r": -0.585964517301641
+  },
+  {
+   "mds_dim": 2,
+   "best_rated_dim": 2,
+   "r": 0.7531711920853227
+  },
+  {
+   "mds_dim": 3,
+   "best_rated_dim": 3,
+   "r": 0.6306656426459224
+  },
+  {
+   "mds_dim": 4,
+   "best_rated_dim": 1,
+   "r": -0.6769968318661761
+  },
+  {
+   "mds_dim": 5,
+   "best_rated_dim": 1,
+   "r": -0.40653070727323604
+  },
+  {
+   "mds_dim": 6,
+   "best_rated_dim": 5,
+   "r": -0.4328602357348261
+  },
+  {
+   "mds_dim": 7,
+   "best_rated_dim": 10,
+   "r": -0.427401680553823
+  },
+  {
+   "mds_dim": 8,
+   "best_rated_dim": 14,
+   "r": -0.3923303300274309
+  }
+ ],
+ "D_pca_explained": [
+  0.1006767600774765,
+  0.06462067365646362,
+  0.04822448641061783,
+  0.03961733356118202,
+  0.03835511952638626,
+  0.029439060017466545,
+  0.02463376894593239,
+  0.02292555570602417
+ ],
+ "D_axes": [
+  {
+   "pc": 1,
+   "best_rated_dim": 7,
+   "r_with_rated": -0.5357721355488883,
+   "image_stats": {
+    "mean lightness": -0.24607163411274122,
+    "mean saturation": -0.06775588532229315,
+    "grey-level std (texture)": 0.3132901210211985
+   },
+   "low_end": [
+    "I_Gabbro_03",
+    "I_Gabbro_12",
+    "I_Rhyolite_10",
+    "I_Granite_12",
+    "S_Micrite_07",
+    "S_Sandstone_08",
+    "I_Diorite_01",
+    "I_Pumice_07",
+    "I_Diorite_06",
+    "M_Quartzite_11"
+   ],
+   "high_end": [
+    "S_Rock Gypsum_09",
+    "S_Rock Gypsum_08",
+    "M_Slate_11",
+    "S_Chert_12",
+    "I_Obsidian_04",
+    "S_Bituminous Coal_09",
+    "S_Chert_03",
+    "I_Obsidian_11",
+    "S_Shale_04",
+    "M_Slate_06"
+   ]
+  },
+  {
+   "pc": 2,
+   "best_rated_dim": 2,
+   "r_with_rated": -0.5272004342515657,
+   "image_stats": {
+    "mean lightness": 0.058016637665677204,
+    "mean saturation": 0.23518008645519456,
+    "grey-level std (texture)": -0.2842854888294696
+   },
+   "low_end": [
+    "I_Granite_06",
+    "I_Diorite_10",
+    "M_Gneiss_03",
+    "I_Granite_04",
+    "I_Granite_08",
+    "I_Diorite_12",
+    "M_Gneiss_12",
+    "M_Migmatite_09",
+    "I_Diorite_03",
+    "I_Granite_10"
+   ],
+   "high_end": [
+    "M_Slate_05",
+    "M_Quartzite_07",
+    "S_Dolomite_05",
+    "S_Sandstone_08",
+    "S_Shale_08",
+    "S_Dolomite_01",
+    "S_Shale_07",
+    "S_Micrite_10",
+    "M_Slate_08",
+    "S_Micrite_07"
+   ]
+  },
+  {
+   "pc": 3,
+   "best_rated_dim": 1,
+   "r_with_rated": 0.6465971129488299,
+   "image_stats": {
+    "mean lightness": 0.5901807913980188,
+    "mean saturation": 0.3273531260411931,
+    "grey-level std (texture)": -0.3158873450903724
+   },
+   "low_end": [
+    "M_Amphibolite_03",
+    "M_Amphibolite_11",
+    "M_Anthracite_12",
+    "S_Bituminous Coal_02",
+    "M_Amphibolite_01",
+    "M_Phyllite_08",
+    "I_Obsidian_09",
+    "M_Anthracite_11",
+    "I_Basalt_02",
+    "M_Anthracite_06"
+   ],
+   "high_end": [
+    "I_Rhyolite_08",
+    "I_Pumice_12",
+    "S_Dolomite_04",
+    "I_Rhyolite_04",
+    "M_Marble_03",
+    "S_Sandstone_11",
+    "I_Pumice_11",
+    "S_Sandstone_04",
+    "S_Micrite_01",
+    "S_Sandstone_10"
+   ]
+  },
+  {
+   "pc": 4,
+   "best_rated_dim": 5,
+   "r_with_rated": 0.7245389954851698,
+   "image_stats": {
+    "mean lightness": 0.06749485988938463,
+    "mean saturation": -0.11632180621617394,
+    "grey-level std (texture)": -0.16111903923289086
+   },
+   "low_end": [
+    "I_Peridotite_06",
+    "I_Pegmatite_04",
+    "M_Amphibolite_11",
+    "S_Conglomerate_11",
+    "S_Breccia_01",
+    "S_Rock Salt_04",
+    "S_Conglomerate_04",
+    "S_Conglomerate_06",
+    "S_Conglomerate_07",
+    "S_Conglomerate_12"
+   ],
+   "high_end": [
+    "S_Sandstone_01",
+    "S_Sandstone_03",
+    "M_Amphibolite_10",
+    "I_Rhyolite_03",
+    "M_Phyllite_06",
+    "S_Sandstone_07",
+    "M_Slate_12",
+    "M_Phyllite_05",
+    "M_Gneiss_11",
+    "M_Hornfels_10"
+   ]
+  },
+  {
+   "pc": 5,
+   "best_rated_dim": 6,
+   "r_with_rated": 0.2957231912870907,
+   "image_stats": {
+    "mean lightness": 0.2958815509156053,
+    "mean saturation": 0.22476133242546908,
+    "grey-level std (texture)": 0.29029751598152104
+   },
+   "low_end": [
+    "S_Micrite_07",
+    "M_Amphibolite_02",
+    "S_Bituminous Coal_12",
+    "S_Bituminous Coal_05",
+    "M_Schist_01",
+    "I_Basalt_09",
+    "S_Shale_10",
+    "I_Andesite_08",
+    "M_Hornfels_11",
+    "I_Andesite_03"
+   ],
+   "high_end": [
+    "I_Diorite_06",
+    "I_Granite_12",
+    "I_Diorite_08",
+    "S_Rock Salt_10",
+    "I_Granite_11",
+    "I_Diorite_09",
+    "S_Breccia_11",
+    "S_Breccia_07",
+    "S_Rock Salt_11",
+    "S_Chert_11"
+   ]
+  },
+  {
+   "pc": 6,
+   "best_rated_dim": 9,
+   "r_with_rated": 0.4726499797354843,
+   "image_stats": {
+    "mean lightness": -0.07001945237988372,
+    "mean saturation": -0.03494305736290079,
+    "grey-level std (texture)": 0.13267446488748127
+   },
+   "low_end": [
+    "M_Marble_04",
+    "S_Dolomite_07",
+    "S_Rock Salt_10",
+    "M_Quartzite_11",
+    "M_Marble_11",
+    "M_Quartzite_09",
+    "M_Quartzite_01",
+    "M_Hornfels_02",
+    "S_Dolomite_03",
+    "M_Quartzite_03"
+   ],
+   "high_end": [
+    "I_Pumice_06",
+    "M_Gneiss_06",
+    "M_Gneiss_11",
+    "S_Sandstone_06",
+    "M_Phyllite_08",
+    "M_Gneiss_09",
+    "M_Gneiss_02",
+    "M_Gneiss_08",
+    "S_Bituminous Coal_03",
+    "M_Gneiss_01"
+   ]
+  }
+ ],
+ "E_same_category_auc_zero_shot": 0.8271666094211593,
+ "E_1nn_category_accuracy_leave_one_out": 0.4527777777777778,
+ "E_chance": 0.03333333333333333,
+ "B_dim_names_by_inspection": {
+  "1": "lightness of colour",
+  "2": "average grain size",
+  "3": "roughness",
+  "4": "shininess",
+  "5": "organisation (layered/regular vs random)",
+  "6": "variability of colour",
+  "7": "visible grain (present)",
+  "8": "fragments (present)",
+  "9": "physical layers (present)",
+  "10": "holes / porous (pumice)",
+  "11": "flat cleavage (slate)",
+  "12": "conchoidal / curved fracture",
+  "13": "fragment size",
+  "14": "fragment roundness",
+  "15": "veins / bands"
+ }
+}
